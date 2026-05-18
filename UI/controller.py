@@ -41,3 +41,5 @@ class Controller:
         self._view.txt_result.controls.append(ft.Text("Di seguito il dettaglio sui nodi:"))
         for nodo, grado in self._model.get_nodes_degrees():
             self._view.txt_result.controls.append(ft.Text(f"{nodo.StateNme} -- {grado} vicini."))
+
+        self._view.update_page()

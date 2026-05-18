@@ -17,5 +17,6 @@ class Model:
         return nx.number_connected_components(self.grafo)
 
     def get_nodes_degrees(self):
-        # Ritorna una lista di tuple (Nodo, Grado)
-        return [(n, self.grafo.degree(n)) for n in self.grafo.nodes()]
+        # Ordiniamo i nodi usando il nome dello stato come chiave
+        nodi_ordinati = sorted(self.grafo.nodes(), key=lambda x: x.StateNme)
+        return [(n, self.grafo.degree(n)) for n in nodi_ordinati]
