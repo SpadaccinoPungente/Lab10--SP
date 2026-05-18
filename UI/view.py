@@ -38,7 +38,7 @@ class View(ft.UserControl):
         row1 = ft.Row([self.txtAnno, self.btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
 
         # ROW 2
-        self.ddMenuStato = ft.Dropdown()
+        self.ddMenuStato = ft.Dropdown(label="Stato di partenza", on_change=self._controller.choiceDDStatoPartenza)
         self.btnStatiRaggiungibili = ft.ElevatedButton(
             text="Calcola Stati Raggiungibili",
             on_click=self._controller.handleStatiRaggiungibili

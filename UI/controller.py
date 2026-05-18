@@ -1,3 +1,5 @@
+import time
+
 import flet as ft
 
 
@@ -49,7 +51,66 @@ class Controller:
         self._fillDDStatiRaggiungibili()
 
     def handleStatiRaggiungibili(self, e):
-        print(self.choiceStatoPartenza)
+        # Controllo di sicurezza iniziale
+        if self.choiceStatoPartenza is None:
+            self._view.txt_result.controls.clear()
+            self._view.txt_result.controls.append(ft.Text("Attenzione: selezionare uno stato.", color="red"))
+            self._view.update_page()
+            return
+
+        # Conversione in intero per id_map_stati
+        stato_partenza = self._model.id_map_stati[int(self.choiceStatoPartenza)]
+
+        self._view.txt_result.controls.clear()
+        self._view.txt_result.controls.append(
+            ft.Text(f"Analisi e confronto per lo stato: {stato_partenza.StateNme}\n", weight="bold", size=16)
+        )
+
+        # Iterativo (BFS)
+        start_time = time.time()
+        res_iter = self._model.get_reachable_states_iterative(stato_partenza)
+        time_iter = time.time() - start_time
+
+        # 2. Ricorsione (DFS)
+        start_time = time.time()
+        res_ric = self._model.get_reachable_states_recursive(stato_partenza)
+        time_ric = time.time() - start_time
+
+        # 3. nx.bfs_tree
+        start_time = time.time()
+        res_tree = self._model.get_reachable_states_nx_tree(stato_partenza)
+        time_tree = time.time() - start_time
+
+        # 4. nx.node_connected_component
+        start_time = time.time()
+        res_comp = self._model.get_reachable_states_nx_component(stato_partenza)
+        time_comp = time.time() - start_time
+
+        # Ordiniamo l'output alfabeticamente (usiamo res_iter come riferimento)
+        raggiungibili_ordinati = sorted(res_iter, key=lambda x: x.StateNme)
+
+        # Stampa confronto tempi
+        self._view.txt_result.controls.append(ft.Text("[CONFRONTO TEMPI DI ESECUZIONE]", color="blue"))
+        self._view.txt_result.controls.append(
+            ft.Text(f"1. Iterativo (BFS): {time_iter:.6f} secondi (Nodi: {len(res_iter)})", color="blue")
+        )
+        self._view.txt_result.controls.append(
+            ft.Text(f"2. Ricorsivo (DFS): {time_ric:.6f} secondi (Nodi: {len(res_ric)})", color="blue")
+        )
+        self._view.txt_result.controls.append(
+            ft.Text(f"3. NX Albero (nx.bfs_tree): {time_tree:.6f} secondi (Nodi: {len(res_tree)})", color="blue")
+        )
+        self._view.txt_result.controls.append(
+            ft.Text(
+                f"4. NX Componente (nx.node_connected_component): {time_comp:.6f} secondi (Nodi: {len(res_comp)})", color="blue")
+        )
+
+        # Stampa stati
+        self._view.txt_result.controls.append(ft.Text(f"\nStati raggiungibili da {stato_partenza.StateNme}:"))
+
+        for stato in raggiungibili_ordinati: self._view.txt_result.controls.append(ft.Text(f"{stato.StateNme}"))
+
+        self._view.update_page()
 
     def _fillDDStatiRaggiungibili(self):
         """
@@ -61,21 +122,21 @@ class Controller:
         nodi_grafo = sorted(self._model.grafo.nodes(), key=lambda x: x.StateNme)
 
         """
-        # Modo 1
+        # Modo 1 (for)
         for nodo in nodi_grafo:
             self._view.ddMenuStato.options.append(ft.dropdown.Option(key=str(nodo.CCode), text=nodo.StateNme))
 
-        # Modo 2
+        # Modo 2 (map)
         opzioni = map(lambda nodo: ft.dropdown.Option(key=str(nodo.CCode), text=nodo.StateNme), nodi_grafo)
         self._view.ddMenuStato.options = opzioni
         """
 
-        # Modo 3
+        # Modo 3 (list comprehension)
         self._view.ddMenuStato.options = [ft.dropdown.Option(key=str(nodo.CCode), text=nodo.StateNme) for nodo in nodi_grafo]
 
         self._view.update_page()
 
-    def _choiceDDStatoPartenza(self, e):
+    def choiceDDStatoPartenza(self, e):
         """
         Gestore dell'evento on_change del Dropdown (se si desidera tracciare la scelta in tempo reale in una variabile d'istanza).
         """
