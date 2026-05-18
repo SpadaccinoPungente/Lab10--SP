@@ -30,18 +30,21 @@ class View(ft.UserControl):
         self._page.controls.append(self._title)
 
         # ROW 1
-        self.txtAnno = ft.TextField(label="Anno")
+        self.txtAnno = ft.TextField(label="Anno", width=250)
         self.btnCalcola = ft.ElevatedButton(
             text="Calcola Confini",
-            on_click=self._controller.handleCalcola)
+            on_click=self._controller.handleCalcola,
+            width=250
+        )
 
         row1 = ft.Row([self.txtAnno, self.btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
 
         # ROW 2
-        self.ddMenuStato = ft.Dropdown(label="Stato di partenza", on_change=self._controller.choiceDDStatoPartenza)
+        self.ddMenuStato = ft.Dropdown(label="Stato di partenza", on_change=self._controller.choiceDDStatoPartenza, width=250)
         self.btnStatiRaggiungibili = ft.ElevatedButton(
             text="Calcola Stati Raggiungibili",
-            on_click=self._controller.handleStatiRaggiungibili
+            on_click=self._controller.handleStatiRaggiungibili,
+            width=250
         )
 
         row2 = ft.Row([self.ddMenuStato, self.btnStatiRaggiungibili], alignment=ft.MainAxisAlignment.CENTER)

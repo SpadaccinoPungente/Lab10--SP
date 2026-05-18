@@ -91,22 +91,14 @@ class Controller:
 
         # Stampa confronto tempi
         self._view.txt_result.controls.append(ft.Text("[CONFRONTO TEMPI DI ESECUZIONE]", color="blue"))
-        self._view.txt_result.controls.append(
-            ft.Text(f"1. Iterativo (BFS): {time_iter:.6f} secondi (Nodi: {len(res_iter)})", color="blue")
-        )
-        self._view.txt_result.controls.append(
-            ft.Text(f"2. Ricorsivo (DFS): {time_ric:.6f} secondi (Nodi: {len(res_ric)})", color="blue")
-        )
-        self._view.txt_result.controls.append(
-            ft.Text(f"3. NX Albero (nx.bfs_tree): {time_tree:.6f} secondi (Nodi: {len(res_tree)})", color="blue")
-        )
-        self._view.txt_result.controls.append(
-            ft.Text(
-                f"4. NX Componente (nx.node_connected_component): {time_comp:.6f} secondi (Nodi: {len(res_comp)})", color="blue")
-        )
+        self._view.txt_result.controls.append(ft.Text(f"1. Iterativo (BFS): {time_iter:.6f} s", color="blue"))
+        self._view.txt_result.controls.append(ft.Text(f"2. Ricorsivo (DFS): {time_ric:.6f} s", color="blue"))
+        self._view.txt_result.controls.append(ft.Text(f"3. NX (nx.bfs_tree): {time_tree:.6f} s", color="blue"))
+        self._view.txt_result.controls.append(ft.Text(f"4. NX (nx.node_connected_component): {time_comp:.6f} s", color="blue"))
 
         # Stampa stati
-        self._view.txt_result.controls.append(ft.Text(f"\nStati raggiungibili da {stato_partenza.StateNme}:"))
+        self._view.txt_result.controls.append(
+            ft.Text(f"\nStati raggiungibili da {stato_partenza.StateNme} ({len(res_iter)} nodi):"))
 
         for stato in raggiungibili_ordinati: self._view.txt_result.controls.append(ft.Text(f"{stato.StateNme}"))
 
@@ -140,4 +132,4 @@ class Controller:
         """
         Gestore dell'evento on_change del Dropdown (se si desidera tracciare la scelta in tempo reale in una variabile d'istanza).
         """
-        self.choiceStatoPartenza = e.control.data
+        self.choiceStatoPartenza = e.control.value
