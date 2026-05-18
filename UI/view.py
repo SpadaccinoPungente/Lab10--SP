@@ -21,24 +21,34 @@ class View(ft.UserControl):
         self.txtAnno = None
         self.btnCalcola = None
         self.txt_result = None
+        self.ddMenuStato = None
+        self.btnStatiRaggiungibili = None
 
     def load_interface(self):
         # title
         self._title = ft.Text("Country Borders", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        # ROW with controls
+        # ROW 1
         self.txtAnno = ft.TextField(label="Anno")
         self.btnCalcola = ft.ElevatedButton(
             text="Calcola Confini",
             on_click=self._controller.handleCalcola)
 
         row1 = ft.Row([self.txtAnno, self.btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row1)
+
+        # ROW 2
+        self.ddMenuStato = ft.Dropdown()
+        self.btnStatiRaggiungibili = ft.ElevatedButton(
+            text="Calcola Stati Raggiungibili",
+            on_click=self._controller.handleStatiRaggiungibili
+        )
+
+        row2 = ft.Row([self.ddMenuStato, self.btnStatiRaggiungibili], alignment=ft.MainAxisAlignment.CENTER)
 
         # List View where the results are displayed
         self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
-        self._page.controls.append(self.txt_result)
+        self._page.controls.extend([row1, row2, self.txt_result])
 
         self._page.update()
 
