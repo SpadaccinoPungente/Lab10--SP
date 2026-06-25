@@ -21,12 +21,14 @@ class Controller:
 
         nodes_w_deg = self._model.getNodesWDeg()
 
+        nodes_w_deg_sorted = sorted(nodes_w_deg, key=lambda node: node[0].StateNme)
+
         self._view._txt_result.controls.clear()
 
         self._view._txt_result.controls.append(ft.Text(f"Grafo creato con {self._model.getLenConnComps()} componenti connesse."))
 
-        for node, deg in nodes_w_deg:
-            self._view._txt_result.controls.append(ft.Text(f"{node}, {deg} stati confinanti."))
+        for node, deg in nodes_w_deg_sorted:
+            self._view._txt_result.controls.append(ft.Text(f"{node}, stati confinanti: {deg}."))
 
         self._view.update_page()
 
