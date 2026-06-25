@@ -8,7 +8,7 @@ class DAO:
         conn = DBConnect.get_connection()
         cursor = conn.cursor(dictionary=True)
 
-        query = "select * from countries"
+        query = "select * from country"
         cursor.execute(query)
 
         res = []

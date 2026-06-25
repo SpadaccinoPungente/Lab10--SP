@@ -7,8 +7,11 @@ class Controller:
         self._model = model
 
     def handleCalcola(self, e):
-        try: anno = int(self._view._txtAnno)
-        except ValueError: self._view.create_alert("Inserire un valore numerico.")
+        try:
+            anno = int(self._view._txtAnno.value)
+        except ValueError:
+            self._view.create_alert("Inserire un valore numerico.")
+            return
 
         if not 1816 <= anno <= 2016:
             self._view.create_alert("Inserire un anno compreso tra il 1816 e il 2016!")
@@ -18,12 +21,12 @@ class Controller:
 
         nodes_w_deg = self._model.getNodesWDeg()
 
-        self._view.controls.clear()
+        self._view._txt_result.controls.clear()
 
-        self._view.txt._txt_result.controls.append(ft.Text(f"Grafo creato con {self._model.getLenConnComps()} componenti connesse."))
+        self._view._txt_result.controls.append(ft.Text(f"Grafo creato con {self._model.getLenConnComps()} componenti connesse."))
 
         for node, deg in nodes_w_deg:
-            self._view.txt._txt_result.controls.append(ft.Text(f"{node}, {deg} stati confinanti."))
+            self._view._txt_result.controls.append(ft.Text(f"{node}, {deg} stati confinanti."))
 
         self._view.update_page()
 
