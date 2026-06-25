@@ -8,7 +8,7 @@ class DAO:
         conn = DBConnect.get_connection()
         cursor = conn.cursor(dictionary=True)
 
-        query = "select * from country"
+        query = "SELECT * FROM country"
         cursor.execute(query)
 
         res = []
@@ -24,10 +24,10 @@ class DAO:
         cursor = conn.cursor()
 
         query = """
-                select c.state1no, c.state2no 
-                from contiguity c
-                where c.conttype = 1
-                and c.year <= %s
+                SELECT state1no, state2no 
+                FROM contiguity 
+                WHERE year <= %s AND conttype = 1
+                AND state1no < state2no
                 """
         cursor.execute(query, (anno,))
 
