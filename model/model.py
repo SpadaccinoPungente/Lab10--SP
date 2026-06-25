@@ -25,4 +25,4 @@ class Model:
         return result
 
     def getLenConnComps(self):
-        return len(nx.connected_components(self.graph))
+        return len(list(nx.connected_components(self.graph)))
