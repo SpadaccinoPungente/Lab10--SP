@@ -30,6 +30,27 @@ class Controller:
         for node, deg in nodes_w_deg_sorted:
             self._view._txt_result.controls.append(ft.Text(f"{node}, stati confinanti: {deg}."))
 
+        countries = sorted([c for c in self._model.id_map_countries.values()], key=lambda c: c.StateNme)
+        self._view._ddCountry.options = [ft.dropdown.Option(key=c.CCode, text=c.StateNme) for c in countries]
+        self._view.update_page()
+
+    def handleRaggiungibili(self, e):
+        selected_id = self._view._ddCountry.value
+
+        if not selected_id:
+            self._view.create_alert("Selezionare uno stato!")
+            return
+
+        selected_country = self._model.id_map_countries.get(int(selected_id))
+
+        reachable = self._model.getReachableStates2(selected_country)
+
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(ft.Text(f"Stati raggiungibili da {selected_country.StateNme}:"))
+
+        for country in sorted(reachable, key=lambda c: c.StateNme):
+            self._view._txt_result.controls.append(ft.Text(f"- {country}"))
+
         self._view.update_page()
 
 

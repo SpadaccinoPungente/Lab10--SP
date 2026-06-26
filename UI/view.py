@@ -14,6 +14,8 @@ class View(ft.UserControl):
         self._txtAnno = None
         self._btnCalcola = None
         self._txt_result = None
+        self._ddCountry = None
+        self._btnRaggiungibili = None
 
     def load_interface(self):
         self._title = ft.Text("Country Borders", color="blue", size=24)
@@ -22,6 +24,10 @@ class View(ft.UserControl):
         self._txtAnno = ft.TextField(label="Anno")
         self._btnCalcola = ft.ElevatedButton(text="Calcola Confini", on_click=self._controller.handleCalcola)
         self._page.controls.append(ft.Row([self._txtAnno, self._btnCalcola], alignment=ft.MainAxisAlignment.CENTER))
+
+        self._ddCountry = ft.Dropdown(label="Stato")
+        self._btnRaggiungibili = ft.ElevatedButton(text="Stati Raggiungibili", on_click=self._controller.handleRaggiungibili)
+        self._page.controls.append(ft.Row([self._ddCountry, self._btnRaggiungibili], alignment=ft.MainAxisAlignment.CENTER))
 
         self._txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
         self._page.controls.append(self._txt_result)
